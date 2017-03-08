@@ -29,7 +29,7 @@ provider:
 
 custom:
   secrets: ${file(secrets.${opt:stage, self:provider.stage}.yml)}
-  
+
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
 #    - Effect: "Allow"
@@ -66,25 +66,25 @@ functions:
       handler: nplay.hello
       events:
         - http:
-          path: nplay/hello
-          method: get
-          cors: true
+            path: nplay/hello
+            method: get
+            cors: true
     privateEndpoint:
       handler: nplay.privateEndpoint
       events:
         - http:
-          path: nplay/private
-          method: get
-          authorizer: auth # See custom authorizer docs here: http://bit.ly/2gXw9pO
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+            path: nplay/private
+            method: get
+            authorizer: auth # See custom authorizer docs here: http://bit.ly/2gXw9pO
+            cors:
+              origins:
+                - '*'
+              headers:
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
 #      - sns: greeter-topic
