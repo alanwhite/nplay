@@ -16,15 +16,20 @@ service: nplay
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
+frameworkVersion: ">=1.2.0 <2.0.0"
+
+plugins:
+  - serverless-secrets-plugin
 
 provider:
   name: aws
   runtime: nodejs4.3
-
-# you can overwrite defaults here
   stage: dev
   region: eu-west-1
 
+custom:
+  secrets: ${file(secrets.${opt:stage, self:provider.stage}.yml)}
+  
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
 #    - Effect: "Allow"
@@ -55,12 +60,31 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  nplayHello:
-    handler: nplay.hello
-    events:
-      - http:
+    auth:
+      handler: nplay.auth
+    nplayHello:
+      handler: nplay.hello
+      events:
+        - http:
           path: nplay/hello
           method: get
+          cors: true
+    privateEndpoint:
+      handler: nplay.privateEndpoint
+      events:
+        - http:
+          path: nplay/private
+          method: get
+          authorizer: auth # See custom authorizer docs here: http://bit.ly/2gXw9pO
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
 #      - sns: greeter-topic

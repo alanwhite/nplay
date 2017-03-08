@@ -1,0 +1,23 @@
+{
+  "name": "nplay",
+  "version": "1.0.0",
+  "description": "Messin with the cloud",
+  "main": "nplay.js",
+  "dependencies": {
+    "serverless-secrets-plugin": "^0.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alanwhite/nplay.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alanwhite/nplay/issues"
+  },
+  "homepage": "https://github.com/alanwhite/nplay#readme"
+}

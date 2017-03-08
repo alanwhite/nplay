@@ -1,2 +1,4 @@
 node_modules
 .serverless
+secrets.dev.yml
+secrets.prod.yml
