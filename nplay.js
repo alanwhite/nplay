@@ -48,7 +48,7 @@ module.exports.hello = (event, context, callback) => {
   const response = {
     statusCode: 200,
     headers: {
-       "Access-Control-Allow-Origin" : "*"
+       "Access-Control-Allow-Origin" : "https://nplay.whiteware.org"
     },
     body: JSON.stringify({
       message: 'Go Serverless v1.0! Public API says Hi!',
@@ -61,5 +61,15 @@ module.exports.hello = (event, context, callback) => {
 
 // Private API
 module.exports.privateEndpoint = (event, context, cb) => {
-  cb(null, { message: 'Only logged in users can see this' });
+  const response = {
+    statusCode: 200,
+    headers: {
+       "Access-Control-Allow-Origin" : "*"
+    },
+    body: JSON.stringify({
+      message: 'Only logged in users can see this',
+      input: event,
+    }),
+  };
+  cb(null, response);
 };
