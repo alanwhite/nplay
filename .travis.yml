@@ -6,8 +6,8 @@ before_install:
   - npm install -g serverless
 
 script:
-  - serverless decrypt --stage dev --password $SLS_ENCRYPT_KEY 
-  - serverless deploy --verbose
+  - serverless decrypt --stage dev --password $SLS_ENCRYPT_KEY
+  - serverless deploy --stage dev --verbose
 
 after_deploy:
   # Allow `awscli` to make requests to CloudFront.
