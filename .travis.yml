@@ -6,7 +6,7 @@ before_install:
   - npm install -g serverless
 
 script:
-  - serverless decrypt --stage dev --password $SLS_ENCRYPT_KEY secrets.dev.yml.encrypted
+  - serverless decrypt --stage dev --password $SLS_ENCRYPT_KEY 
   - serverless deploy --verbose
 
 after_deploy:
