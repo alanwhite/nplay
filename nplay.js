@@ -31,14 +31,19 @@ module.exports.auth = (event, context, cb) => {
     const options = {
       audience: AUTH0_CLIENT_ID,
     };
+    console.log(event.authorizationToken);
+    console.log(token);
+    console.log(options);
     jwt.verify(token, AUTH0_CLIENT_SECRET, options, (err, decoded) => {
       if (err) {
+        console.console.log(decoded);
         cb('Unauthorized');
       } else {
         cb(null, generatePolicy(decoded.sub, 'Allow', event.methodArn));
       }
     });
   } else {
+    console.log('no authorizationToken');
     cb('Unauthorized');
   }
 };
