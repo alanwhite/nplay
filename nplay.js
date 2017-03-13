@@ -34,8 +34,10 @@ module.exports.auth = (event, context, cb) => {
     console.log(event.authorizationToken);
     console.log(token);
     console.log(options);
+    console.log(AUTH0_CLIENT_SECRET);
     jwt.verify(token, AUTH0_CLIENT_SECRET, options, (err, decoded) => {
       if (err) {
+        console.log('Error!');
         console.log(err);
         console.log(decoded);
         cb('Unauthorized');
