@@ -71,6 +71,9 @@ functions:
             cors: true
     privateEndpoint:
       handler: nplay.privateEndpoint
+      environment:
+        AUTH0_CLIENT_ID: ${self:custom.secrets.AUTH0_CLIENT_ID}
+        EMAIL_SERVICE_API_KEY: ${self:custom.secrets.AUTH0_CLIENT_SECRET}
       events:
         - http:
             path: nplay/private
