@@ -31,15 +31,15 @@ module.exports.auth = (event, context, cb) => {
     const options = {
       audience: AUTH0_CLIENT_ID,
     };
-    // console.log(event.authorizationToken);
-    // console.log(token);
-    // console.log(options);
-    // console.log(AUTH0_CLIENT_SECRET);
+    console.log(event.authorizationToken);
+    console.log(token);
+    console.log(options);
+    console.log(AUTH0_CLIENT_SECRET);
     jwt.verify(token, AUTH0_CLIENT_SECRET, options, (err, decoded) => {
       if (err) {
-        // console.log('Error!');
-        // console.log(err);
-        // console.log(decoded);
+        console.log('Error!');
+        console.log(err);
+        console.log(decoded);
         cb('Unauthorized');
       } else {
         cb(null, generatePolicy(decoded.sub, 'Allow', event.methodArn));
