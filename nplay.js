@@ -83,5 +83,7 @@ module.exports.privateEndpoint = (event, context, cb) => {
       input: event,
     }),
   };
+  console.log(event);
+  console.log(context);
   cb(null, response);
 };
