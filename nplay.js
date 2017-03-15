@@ -42,6 +42,7 @@ module.exports.auth = (event, context, cb) => {
         console.log(decoded);
         cb('Unauthorized');
       } else {
+        console.log(decoded);
         cb(null, generatePolicy(decoded.sub, 'Allow', event.methodArn));
       }
     });
