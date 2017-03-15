@@ -30,6 +30,7 @@ module.exports.auth = (event, context, cb) => {
     const token = event.authorizationToken.substring(7);
     const options = {
       audience: AUTH0_CLIENT_ID,
+      issuer: 'https://arw001.eu.auth0.com/',
     };
     console.log(event.authorizationToken);
     console.log(token);
