@@ -90,9 +90,12 @@ module.exports.privateEndpoint = (event, context, cb) => {
   console.log(event);
   console.log(context);
 
-  if (event.authorizationToken) {
+  console.log(event.headers.Authorization);
+
+  // if (event.authorizationToken) {
+  if (event.headers.Authorization) {
     // remove "bearer " from token
-    const token = event.authorizationToken.substring(7);
+    const token = event.headers.Authorization.substring(7);
     const options = {
       audience: AUTH0_CLIENT_ID,
       issuer: 'https://arw001.eu.auth0.com/',
