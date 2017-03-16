@@ -81,11 +81,48 @@ module.exports.privateEndpoint = (event, context, cb) => {
        "Access-Control-Allow-Origin" : "*"
     },
     body: JSON.stringify({
-      message: 'Only logged in users can see this',
+      message: 'You are a logged in user so you can see this',
       input: event,
     }),
   };
+
+
   console.log(event);
   console.log(context);
-  cb(null, response);
+
+  if (event.authorizationToken) {
+    // remove "bearer " from token
+    const token = event.authorizationToken.substring(7);
+    const options = {
+      audience: AUTH0_CLIENT_ID,
+      issuer: 'https://arw001.eu.auth0.com/',
+    };
+
+    jwt.verify(token, AUTH0_CLIENT_SECRET, options, (err, decoded) => {
+      if (err) {
+        console.log('Error!');
+        console.log(err);
+        console.log(decoded);
+        response.statusCode = 401;
+        response.body = JSON.stringify({
+          message: 'Error validating your login token',
+          input: event,
+        });
+      } else {
+        console.log(decoded);
+      }
+
+      cb(null, response);
+    });
+
+  } else { // no auth token present
+    response.statusCode = 403;
+    response.body = JSON.stringify({
+      message: 'Nope, not without logging in first',
+      input: event,
+    });
+
+    cb(null, response);
+  }
+
 };

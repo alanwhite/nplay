@@ -60,11 +60,11 @@ custom:
 #    - exclude-me-dir/**
 
 functions:
-    auth:
-      handler: nplay.auth
-      environment:
-        AUTH0_CLIENT_ID: ${self:custom.secrets.AUTH0_CLIENT_ID}
-        AUTH0_CLIENT_SECRET: ${self:custom.secrets.AUTH0_CLIENT_SECRET}
+    # auth:
+      # handler: nplay.auth
+      # environment:
+      #   AUTH0_CLIENT_ID: ${self:custom.secrets.AUTH0_CLIENT_ID}
+      #   AUTH0_CLIENT_SECRET: ${self:custom.secrets.AUTH0_CLIENT_SECRET}
     nplayHello:
       handler: nplay.hello
       events:
@@ -81,7 +81,7 @@ functions:
         - http:
             path: nplay/private
             method: get
-            authorizer: auth # See custom authorizer docs here: http://bit.ly/2gXw9pO
+            # authorizer: auth # See custom authorizer docs here: http://bit.ly/2gXw9pO
             cors:
               origins:
                 - '*'
