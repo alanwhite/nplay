@@ -116,6 +116,8 @@ module.exports.privateEndpoint = (event, context, cb) => {
       }
 
       cb(null, response);
+
+      console.log('will this be seen?');
     });
 
   } else { // no auth token present
