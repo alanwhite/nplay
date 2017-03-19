@@ -4,8 +4,9 @@
   "description": "Messin with the cloud",
   "main": "nplay.js",
   "dependencies": {
-    "serverless-secrets-plugin": "^0.0.1",
-    "jsonwebtoken": "^7.1.9"
+    "auth0-js": "^8.4.0",
+    "jsonwebtoken": "^7.1.9",
+    "serverless-secrets-plugin": "^0.0.1"
   },
   "devDependencies": {},
   "scripts": {

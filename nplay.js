@@ -1,57 +1,58 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
+const auth0 = require('auth0-js');
 
 const AUTH0_CLIENT_ID = process.env.AUTH0_CLIENT_ID;
 const AUTH0_CLIENT_SECRET = process.env.AUTH0_CLIENT_SECRET;
 
 // Policy helper function
-const generatePolicy = (principalId, effect, resource) => {
-  const authResponse = {};
-  authResponse.principalId = principalId;
-  if (effect && resource) {
-    const policyDocument = {};
-    policyDocument.Version = '2012-10-17';
-    policyDocument.Statement = [];
-    const statementOne = {};
-    statementOne.Action = 'execute-api:Invoke';
-    statementOne.Effect = effect;
-    statementOne.Resource = resource;
-    policyDocument.Statement[0] = statementOne;
-    authResponse.policyDocument = policyDocument;
-  }
-  return authResponse;
-};
+// const generatePolicy = (principalId, effect, resource) => {
+//   const authResponse = {};
+//   authResponse.principalId = principalId;
+//   if (effect && resource) {
+//     const policyDocument = {};
+//     policyDocument.Version = '2012-10-17';
+//     policyDocument.Statement = [];
+//     const statementOne = {};
+//     statementOne.Action = 'execute-api:Invoke';
+//     statementOne.Effect = effect;
+//     statementOne.Resource = resource;
+//     policyDocument.Statement[0] = statementOne;
+//     authResponse.policyDocument = policyDocument;
+//   }
+//   return authResponse;
+// };
 
 // Reusable Authorizer function, set on `authorizer` field in serverless.yml
-module.exports.auth = (event, context, cb) => {
-  if (event.authorizationToken) {
-    // remove "bearer " from token
-    const token = event.authorizationToken.substring(7);
-    const options = {
-      audience: AUTH0_CLIENT_ID,
-      issuer: 'https://arw001.eu.auth0.com/',
-    };
-    console.log(event.authorizationToken);
-    console.log(token);
-    console.log(options);
-    console.log(AUTH0_CLIENT_SECRET);
-    jwt.verify(token, AUTH0_CLIENT_SECRET, options, (err, decoded) => {
-      if (err) {
-        console.log('Error!');
-        console.log(err);
-        console.log(decoded);
-        cb('Unauthorized');
-      } else {
-        console.log(decoded);
-        cb(null, generatePolicy(decoded.sub, 'Allow', event.methodArn));
-      }
-    });
-  } else {
-    // console.log('no authorizationToken');
-    cb('Unauthorized');
-  }
-};
+// module.exports.auth = (event, context, cb) => {
+//   if (event.authorizationToken) {
+//     // remove "bearer " from token
+//     const token = event.authorizationToken.substring(7);
+//     const options = {
+//       audience: AUTH0_CLIENT_ID,
+//       issuer: 'https://arw001.eu.auth0.com/',
+//     };
+//     console.log(event.authorizationToken);
+//     console.log(token);
+//     console.log(options);
+//     console.log(AUTH0_CLIENT_SECRET);
+//     jwt.verify(token, AUTH0_CLIENT_SECRET, options, (err, decoded) => {
+//       if (err) {
+//         console.log('Error!');
+//         console.log(err);
+//         console.log(decoded);
+//         cb('Unauthorized');
+//       } else {
+//         console.log(decoded);
+//         cb(null, generatePolicy(decoded.sub, 'Allow', event.methodArn));
+//       }
+//     });
+//   } else {
+//     // console.log('no authorizationToken');
+//     cb('Unauthorized');
+//   }
+// };
 
 // public API
 module.exports.hello = (event, context, callback) => {
@@ -111,11 +112,28 @@ module.exports.privateEndpoint = (event, context, cb) => {
           message: 'Error validating your login token',
           input: event,
         });
+        cb(null, response);
+
       } else {
         console.log(decoded);
-      }
+        auth0.client.userInfo(authResult.accessToken, function(err, user) {
+          if (err) {
+            response.statusCode = 401;
+            response.body = JSON.stringify({
+              message: 'Error looking up your user details',
+              input: event,
+            });
+            cb(null, response);
+          } else {
+            response.body = JSON.stringify({
+              message: 'Back end got your login details' + user.nick,
+              input: event,
+            });
+            cb(null, response);
+          }
+        });
 
-      cb(null, response);
+      }
 
       console.log('will this be seen?');
     });
