@@ -1,7 +1,6 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-const auth0 = require('auth0-js');
 
 const AUTH0_CLIENT_ID = process.env.AUTH0_CLIENT_ID;
 const AUTH0_CLIENT_SECRET = process.env.AUTH0_CLIENT_SECRET;
@@ -116,23 +115,8 @@ module.exports.privateEndpoint = (event, context, cb) => {
 
       } else {
         console.log(decoded);
-        auth0.client.userInfo(authResult.accessToken, function(err, user) {
-          if (err) {
-            response.statusCode = 401;
-            response.body = JSON.stringify({
-              message: 'Error looking up your user details',
-              input: event,
-            });
-            cb(null, response);
-          } else {
-            response.body = JSON.stringify({
-              message: 'Back end got your login details' + user.nick,
-              input: event,
-            });
-            cb(null, response);
-          }
-        });
-
+        console.log(decoded.iss);
+        cb(null, response);
       }
 
       console.log('will this be seen?');
